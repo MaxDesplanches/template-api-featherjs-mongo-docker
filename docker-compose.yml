@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  database-mongodb:
+    image: mongo:4.2.3
+    init: true
+    volumes:
+      - "database-mongodb:/data/db"
+    ports:
+      - "27017:27017"
+  node-app:
+    image: node:13.8
+    command: npm start
+    working_dir: /src
+    volumes:
+        - ./src:/src
+    depends_on:
+        - database-mongodb
+    links:
+        - database-mongodb
+    ports:
+        - "3030:3030"
+
+volumes:
+  node-app:
+  database-mongodb:
